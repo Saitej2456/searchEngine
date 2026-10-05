@@ -1,0 +1,69 @@
+# ================================
+# Environment / secrets
+# ================================
+.env
+.env.*
+!.env.example
+
+# ================================
+# Dependencies
+# ================================
+node_modules/
+
+# ================================
+# Logs
+# ================================
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ================================
+# OS files
+# ================================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ================================
+# Editor / IDE
+# ================================
+.vscode/
+.idea/
+
+# ================================
+# Build / generated output
+# ================================
+dist/
+build/
+coverage/
+
+# ================================
+# Temporary files
+# ================================
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# ================================
+# Local database / Docker data
+# ================================
+*.db
+*.sqlite
+*.sqlite3
+
+# ================================
+# Large/local dataset files
+# ================================
+data/questions.json
+data/stackoverflowBak.json
+
+# ================================
+# AI coding agent generated files
+# ================================
+.agents/
+.claude/
+.cursor/
+.devin/

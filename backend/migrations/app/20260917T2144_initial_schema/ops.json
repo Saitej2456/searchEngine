@@ -1,0 +1,100 @@
+[
+  {
+    "id": "schema.public",
+    "label": "Create schema \"public\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres"
+    },
+    "precheck": [],
+    "execute": [
+      {
+        "description": "Create schema \"public\"",
+        "sql": "CREATE SCHEMA IF NOT EXISTS \"public\"",
+        "params": []
+      }
+    ],
+    "postcheck": []
+  },
+  {
+    "id": "table.question",
+    "label": "Create table \"question\"",
+    "summary": "Creates table \"question\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "question"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"question\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"question\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"question\"",
+        "sql": "CREATE TABLE \"public\".\"question\" (\n  \"answer_count\" int4 NOT NULL,\n  \"body\" text NOT NULL,\n  \"content_license\" text,\n  \"custom_score\" float8 NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"question_id\" int8 NOT NULL,\n  \"score\" int4 NOT NULL,\n  \"tags\" text[] NOT NULL,\n  \"title\" text NOT NULL,\n  \"url\" text,\n  \"view_count\" int4 NOT NULL,\n  PRIMARY KEY (\"id\"),\n  CONSTRAINT \"question_tags_elem_not_null_aecbe9e2\" CHECK (array_position(\"tags\", NULL) IS NULL)\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"question\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"question\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.question.question_question_id_key",
+    "label": "Add unique constraint on \"question\" (question_id)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "question_question_id_key",
+        "table": "question"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"question_question_id_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "question_question_id_key",
+          "public",
+          "\"public\".\"question\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"question_question_id_key\"",
+        "sql": "ALTER TABLE \"public\".\"question\" ADD CONSTRAINT \"question_question_id_key\" UNIQUE (\"question_id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"question_question_id_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "question_question_id_key",
+          "public",
+          "\"public\".\"question\""
+        ]
+      }
+    ]
+  }
+]
