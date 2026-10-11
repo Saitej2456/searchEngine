@@ -9,10 +9,15 @@ try {
     new URL('../prisma/sql/full_text_search.sql', import.meta.url),
     'utf8'
   );
+  const approachCSql = await readFile(
+    new URL('../prisma/sql/approach_c_search.sql', import.meta.url),
+    'utf8'
+  );
 
   await sql.unsafe(migrationSql);
+  await sql.unsafe(approachCSql);
 
-  console.log('Full-text search setup completed successfully.');
+  console.log('Full-text search and Approach C setup completed successfully.');
 } catch (error) {
   console.error('Full-text search setup failed.');
   console.error(error);

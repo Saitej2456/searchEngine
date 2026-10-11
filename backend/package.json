@@ -11,7 +11,8 @@
   "postinstall": "prisma skills sync || exit 0",
   "contract:emit": "prisma contract emit",
   "import:corpus": "node scripts/importCorpus.mjs",
-  "setup:fts": "node scripts/setupFts.mjs"
+  "setup:fts": "node scripts/setupFts.mjs",
+  "test:approach-c": "node scripts/testApproachC.mjs"
 },
   "dependencies": {
     "@prisma/orm-postgres": "^8.0.0-rc.11",
